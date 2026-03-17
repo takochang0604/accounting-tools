@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>訂閱分帳工具</title>
+    <meta name="description" content="管理多人共同分攤的訂閱服務，追蹤付款狀態，輕鬆計算分攤金額。">
+    <link rel="stylesheet" href="app.css">
+</head>
+
+<body>
+
+    <!-- ── Auth Page ──────────────────────────────────────────────── -->
+    <div id="auth-page" class="page">
+        <div class="auth-card">
+            <div class="auth-logo">
+                <span class="logo-icon">💳</span>
+                <h1>訂閱分帳工具</h1>
+                <p>輕鬆管理多人共享訂閱費用</p>
+            </div>
+
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-tab="login">登入</button>
+                <button class="auth-tab" data-tab="register">註冊</button>
+            </div>
+
+            <form id="auth-form" autocomplete="on">
+                <div class="form-group">
+                    <label for="auth-username">帳號</label>
+                    <input id="auth-username" class="form-control" type="text" placeholder="請輸入帳號" required
+                        autocomplete="username" pattern="[a-zA-Z0-9_]{2,20}" title="2-20 個英文、數字或底線">
+                </div>
+                <div class="form-group">
+                    <label for="auth-password">密碼</label>
+                    <div class="input-with-toggle">
+                        <input id="auth-password" class="form-control" type="password" placeholder="至少 6 個字元" required
+                            autocomplete="current-password">
+                        <button type="button" class="eye-btn" data-target="auth-password"
+                            title="顯示密碼">&#128065;</button>
+                    </div>
+                </div>
+                <div id="auth-confirm-wrap" class="form-group hidden">
+                    <label for="auth-confirm">確認密碼</label>
+                    <div class="input-with-toggle">
+                        <input id="auth-confirm" class="form-control" type="password" placeholder="再次輸入密碼"
+                            autocomplete="new-password">
+                        <button type="button" class="eye-btn" data-target="auth-confirm" title="顯示密碼">&#128065;</button>
+                    </div>
+                </div>
+                <div id="auth-error" class="auth-error hidden"></div>
+                <button type="submit" id="auth-submit" class="btn btn-primary btn-full" style="margin-top:.5rem">
+                    登入
+                </button>
+            </form>
+        </div>
+
+        <!-- Auth page brand badge -->
+        <a href="https://www.twainews.com.tw/" target="_blank" rel="noopener" class="brand-badge auth-brand">
+            <span class="brand-badge-icon">
+                <img src="https://firebasestorage.googleapis.com/v0/b/memorandum-3abaa.firebasestorage.app/o/gemini-generated-image-w8bmabw8bmabw8bm-1-removebg-preview-2-1_orig.png?alt=media&token=2d3df30f-4cc7-4f28-b15c-0e3de6bdd9e1" alt="TWAI NEWS">
+            </span>
+            <span class="brand-badge-text">TWAI NEWS 製作提供</span>
+        </a>
+    </div>
+
+    <!-- ── App Page ───────────────────────────────────────────────── -->
+    <div id="app-page" class="page hidden">
+
+        <header class="app-header">
+            <div class="header-brand">
+                <span class="brand-icon">💳</span>
+                <h1>訂閱分帳</h1>
+            </div>
+            <div class="header-right">
+                <span id="user-username" class="header-email"></span>
+                <a href="https://www.twainews.com.tw/" target="_blank" rel="noopener" class="brand-badge">
+                    <span class="brand-badge-icon">
+                        <img src="https://firebasestorage.googleapis.com/v0/b/memorandum-3abaa.firebasestorage.app/o/gemini-generated-image-w8bmabw8bmabw8bm-1-removebg-preview-2-1_orig.png?alt=media&token=2d3df30f-4cc7-4f28-b15c-0e3de6bdd9e1" alt="TWAI NEWS">
+                    </span>
+                    <span class="brand-badge-text">TWAI NEWS 製作提供</span>
+                </a>
+                <button id="change-pw-btn" class="btn btn-ghost btn-sm" title="更改密碼">🔐 更改密碼</button>
+                <button id="logout-btn" class="btn btn-ghost btn-sm">登出</button>
+            </div>
+        </header>
+
+        <main class="app-main">
+            <div class="dashboard-top">
+                <div>
+                    <div class="dashboard-title">我的訂閱</div>
+                    <div id="dashboard-count" class="dashboard-count"></div>
+                </div>
+                <button id="add-sub-btn" class="btn btn-primary">
+                    ＋ 新增訂閱
+                </button>
+            </div>
+
+            <div id="subscriptions-grid" class="subscriptions-grid"></div>
+
+            <div id="empty-state" class="empty-state hidden">
+                <div class="empty-icon">📭</div>
+                <div class="empty-title">還沒有訂閱項目</div>
+                <div class="empty-desc">點擊「新增訂閱」開始管理你的共享訂閱費用</div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ── Form Modal (Add / Edit) ────────────────────────────────── -->
+    <div id="form-modal" class="modal hidden">
+        <div class="modal-backdrop"></div>
+        <div class="modal-panel">
+            <div class="modal-header">
+                <h2 id="form-modal-title">新增訂閱</h2>
+                <button class="modal-close" aria-label="關閉">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <form id="sub-form" autocomplete="off">
+
+                    <!-- Platform -->
+                    <div class="form-group">
+                        <label>選擇平台</label>
+                        <div class="platform-grid" id="platform-grid"></div>
+                        <input id="custom-platform-name" class="form-control hidden" type="text" placeholder="請輸入自訂平台名稱"
+                            style="margin-top:.5rem">
+                        <div id="custom-emoji-picker" class="custom-emoji-grid hidden"></div>
+                    </div>
+
+                    <!-- Amount & Currency -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="total-amount">總費用</label>
+                            <input id="total-amount" class="form-control" type="number" min="0" step="0.01"
+                                placeholder="0" required>
+                        </div>
+                        <div class="form-group" style="max-width:110px">
+                            <label for="currency">幣別</label>
+                            <select id="currency" class="form-control"></select>
+                        </div>
+                    </div>
+
+                    <!-- Billing Cycle -->
+                    <div class="form-group">
+                        <label>計費週期</label>
+                        <div class="cycle-toggle">
+                            <button type="button" class="cycle-btn active" data-cycle="monthly">月費</button>
+                            <button type="button" class="cycle-btn" data-cycle="yearly">年費</button>
+                        </div>
+                    </div>
+
+                    <!-- Billing Day/Month -->
+                    <div class="form-row">
+                        <div id="billing-month-group" class="form-group hidden">
+                            <label for="billing-month">扣款月份</label>
+                            <select id="billing-month" class="form-control"></select>
+                        </div>
+                        <div class="form-group" style="max-width:130px">
+                            <label for="billing-day">扣款日</label>
+                            <input id="billing-day" class="form-control" type="number" min="1" max="31"
+                                placeholder="例：15">
+                        </div>
+                    </div>
+
+                    <!-- Note -->
+                    <div class="form-group">
+                        <label for="sub-note">備註</label>
+                        <textarea id="sub-note" class="form-control" rows="2" placeholder="選填"></textarea>
+                    </div>
+
+                    <!-- Members -->
+                    <div class="form-group" style="margin-bottom:0">
+                        <div class="form-section-header">
+                            <span class="form-section-label">分攤成員</span>
+                            <button type="button" id="auto-split-btn" class="btn btn-ghost btn-sm">⚡ 平均分攤</button>
+                        </div>
+                        <div id="member-list"></div>
+                        <button type="button" id="add-member-btn" class="btn btn-ghost btn-sm"
+                            style="margin-top:.5rem; width:100%">
+                            ＋ 新增成員
+                        </button>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="form-actions">
+                        <button type="button" id="cancel-form-btn" class="btn btn-ghost">取消</button>
+                        <button type="submit" id="save-sub-btn" class="btn btn-primary">儲存</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Detail Modal ───────────────────────────────────────────── -->
+    <div id="detail-modal" class="modal hidden">
+        <div class="modal-backdrop"></div>
+        <div class="modal-panel">
+            <div class="modal-header">
+                <h2 id="detail-title"></h2>
+                <button class="modal-close" aria-label="關閉">&times;</button>
+            </div>
+            <div id="detail-body" class="modal-body"></div>
+        </div>
+    </div>
+
+    <!-- ── Change Password Modal ──────────────────────────── -->
+    <div id="chpw-modal" class="modal hidden">
+        <div class="modal-backdrop"></div>
+        <div class="modal-panel" style="max-width:420px">
+            <div class="modal-header">
+                <h2>更改密碼</h2>
+                <button class="modal-close" aria-label="關閉">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="chpw-form">
+                    <div class="form-group">
+                        <label for="chpw-current">目前密碼</label>
+                        <div class="input-with-toggle">
+                            <input id="chpw-current" class="form-control" type="password" placeholder="輸入目前密碼" required>
+                            <button type="button" class="eye-btn" data-target="chpw-current"
+                                title="顯示密碼">&#128065;</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="chpw-new">新密碼</label>
+                        <div class="input-with-toggle">
+                            <input id="chpw-new" class="form-control" type="password" placeholder="至少 6 個字元" required>
+                            <button type="button" class="eye-btn" data-target="chpw-new" title="顯示密碼">&#128065;</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="chpw-confirm">確認新密碼</label>
+                        <div class="input-with-toggle">
+                            <input id="chpw-confirm" class="form-control" type="password" placeholder="再次輸入新密碼"
+                                required>
+                            <button type="button" class="eye-btn" data-target="chpw-confirm"
+                                title="顯示密碼">&#128065;</button>
+                        </div>
+                    </div>
+                    <div id="chpw-error" class="auth-error hidden"></div>
+                    <div class="form-actions">
+                        <button type="button" id="chpw-cancel" class="btn btn-ghost">取消</button>
+                        <button type="submit" id="chpw-submit" class="btn btn-primary">確認更改</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="main.js"></script>
+</body>
+
+</html>
