@@ -55,14 +55,6 @@
             </form>
         </div>
 
-        <!-- 工具造訪人數（TWAI 德章上方） -->
-        <div class="auth-counter auth-counter-bottom">
-            <span class="auth-counter-icon">👁</span>
-            <span class="auth-counter-label">工具造訪人數</span>
-            <span id="auth-pageview-count" class="auth-counter-num">—</span>
-            <span class="auth-counter-unit">人次</span>
-        </div>
-
         <!-- Auth page brand badge -->
         <a href="https://www.twainews.com.tw/" target="_blank" rel="noopener" class="brand-badge auth-brand">
             <span class="brand-badge-icon">
@@ -100,12 +92,6 @@
                     <div id="dashboard-count" class="dashboard-count"></div>
                 </div>
                 <div class="dashboard-top-right">
-                    <div class="pageview-badge" title="累計訪問次數（同帳號可重複計算）">
-                        <span class="pageview-icon">👁</span>
-                        <span class="pageview-label">工具造訪人數</span>
-                        <span id="pageview-count" class="pageview-num">—</span>
-                        <span class="pageview-unit">次</span>
-                    </div>
                     <button id="add-sub-btn" class="btn btn-primary">
                         ＋ 新增訂閱
                     </button>
@@ -120,6 +106,16 @@
                 <div class="empty-desc">點擊「新增訂閱」開始管理你的共享訂閱費用</div>
             </div>
         </main>
+
+        <!-- Page Footer: counter -->
+        <footer class="app-footer">
+            <div class="pageview-badge" title="累計訪問次數（同帳號可重複計算）">
+                <span class="pageview-icon">👁</span>
+                <span class="pageview-label">工具造訪人數</span>
+                <span id="pageview-count" class="pageview-num">—</span>
+                <span class="pageview-unit">次</span>
+            </div>
+        </footer>
     </div>
 
     <!-- ── Form Modal (Add / Edit) ────────────────────────────────── -->

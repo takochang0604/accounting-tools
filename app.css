@@ -767,3 +767,60 @@ select.form-control option { background: #1a1a35; }
   animation: fadeUp .35s ease, urgentPulse 2.2s ease-in-out infinite;
 }
 
+
+/* ── Page-view Counter Badge ──────────────────────────────────────────────── */
+.pageview-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    padding: .38rem .9rem .38rem .65rem;
+    background: rgba(255, 255, 255, .08);
+    border: 1px solid rgba(255, 255, 255, .14);
+    border-radius: 100px;
+    font-size: .82rem;
+    color: var(--text);
+    white-space: nowrap;
+    cursor: default;
+    transition: .2s ease;
+}
+
+.pageview-badge:hover {
+    border-color: rgba(255, 255, 255, .22);
+    background: rgba(255, 255, 255, .12);
+}
+
+.pageview-icon {
+    font-size: .9rem;
+    opacity: .8;
+}
+
+.pageview-label {
+    font-size: .78rem;
+    color: var(--text-muted, #94a3b8);
+    font-weight: 500;
+}
+
+.pageview-num {
+    font-size: .95rem;
+    font-weight: 700;
+    color: #fff;
+    min-width: 2ch;
+    text-align: right;
+}
+
+.pageview-unit {
+    font-size: .76rem;
+    color: var(--text-muted, #94a3b8);
+    font-weight: 500;
+}
+
+/* ── App Footer ───────────────────────────────────────────────────────────── */
+.app-footer {
+    padding: 1rem 1.75rem 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, .05);
+    margin-top: auto;
+}

@@ -3,7 +3,7 @@ import {
   listenSubscriptions, addSubscription,
   updateSubscription, deleteSubscription, reorderSubscriptions,
 } from './db.js';
-import { hitCounter, getCounter } from './counter.js';
+import { hitCounter } from './counter.js';
 import {
   showPage, setUserEmail, showToast, renderGrid,
   openFormModal, closeFormModal, openDetailModal, closeDetailModal,
@@ -52,9 +52,7 @@ onAuthChange(async (user) => {
     const displayVal = count !== null ? count.toLocaleString() : '—';
     const el = document.getElementById('pageview-count');
     if (el) el.textContent = displayVal;
-    // Also keep login page in sync (for next visit before login)
-    const authEl = document.getElementById('auth-pageview-count');
-    if (authEl) authEl.textContent = displayVal;
+
   } else {
     stopListening();
     showPage('auth-page');
@@ -380,10 +378,3 @@ document.getElementById('sub-form')?.addEventListener('submit', async (e) => {
     `<option value="${i + 1}">${m}</option>`).join('');
 })();
 
-// —— Show current counter on login page (read-only, no increment) ———————————————————
-(async function initAuthCounter() {
-  const el = document.getElementById('auth-pageview-count');
-  if (!el) return;
-  const count = await getCounter();
-  el.textContent = count !== null ? count.toLocaleString() : '—';
-})();
