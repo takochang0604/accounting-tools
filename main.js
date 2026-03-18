@@ -3,7 +3,7 @@ import {
   listenSubscriptions, addSubscription,
   updateSubscription, deleteSubscription, reorderSubscriptions,
 } from './db.js';
-import { hitCounter } from './counter.js';
+import { hitCounter, getCounter } from './counter.js';
 import {
   showPage, setUserEmail, showToast, renderGrid,
   openFormModal, closeFormModal, openDetailModal, closeDetailModal,
@@ -47,10 +47,14 @@ onAuthChange(async (user) => {
     showPage('app-page');
     startListening();
 
-    // Hit counter — CounterAPI REST, no Firebase needed
+    // Hit counter — increment (global, shared across all users) and update both elements
     const count = await hitCounter();
+    const displayVal = count !== null ? count.toLocaleString() : '—';
     const el = document.getElementById('pageview-count');
-    if (el) el.textContent = count !== null ? count.toLocaleString() : '—';
+    if (el) el.textContent = displayVal;
+    // Also keep login page in sync (for next visit before login)
+    const authEl = document.getElementById('auth-pageview-count');
+    if (authEl) authEl.textContent = displayVal;
   } else {
     stopListening();
     showPage('auth-page');
@@ -374,4 +378,12 @@ document.getElementById('sub-form')?.addEventListener('submit', async (e) => {
   if (!sel) return;
   sel.innerHTML = MONTHS.map((m, i) =>
     `<option value="${i + 1}">${m}</option>`).join('');
+})();
+
+// —— Show current counter on login page (read-only, no increment) ———————————————————
+(async function initAuthCounter() {
+  const el = document.getElementById('auth-pageview-count');
+  if (!el) return;
+  const count = await getCounter();
+  el.textContent = count !== null ? count.toLocaleString() : '—';
 })();
