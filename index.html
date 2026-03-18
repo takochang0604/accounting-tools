@@ -20,14 +20,6 @@
                 <p>輕鬆管理多人共享訂閱費用</p>
             </div>
 
-            <!-- 工具造訪人數（登入頁顯示，只讀） -->
-            <div class="auth-counter">
-                <span class="auth-counter-icon">👁</span>
-                <span class="auth-counter-label">工具造訪人數</span>
-                <span id="auth-pageview-count" class="auth-counter-num">—</span>
-                <span class="auth-counter-unit">人次</span>
-            </div>
-
             <div class="auth-tabs">
                 <button class="auth-tab active" data-tab="login">登入</button>
                 <button class="auth-tab" data-tab="register">註冊</button>
@@ -61,6 +53,14 @@
                     登入
                 </button>
             </form>
+        </div>
+
+        <!-- 工具造訪人數（TWAI 德章上方） -->
+        <div class="auth-counter auth-counter-bottom">
+            <span class="auth-counter-icon">👁</span>
+            <span class="auth-counter-label">工具造訪人數</span>
+            <span id="auth-pageview-count" class="auth-counter-num">—</span>
+            <span class="auth-counter-unit">人次</span>
         </div>
 
         <!-- Auth page brand badge -->
