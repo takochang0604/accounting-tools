@@ -1,14 +1,15 @@
 import { onAuthChange, register, login, logout, toUsername, changePassword } from './auth.js';
 import {
   listenSubscriptions, addSubscription,
-  updateSubscription, deleteSubscription,
+  updateSubscription, deleteSubscription, reorderSubscriptions,
 } from './db.js';
+import { hitCounter } from './counter.js';
 import {
   showPage, setUserEmail, showToast, renderGrid,
   openFormModal, closeFormModal, openDetailModal, closeDetailModal,
   addFormMember, removeFormMember, syncMemberField, autoSplit,
   setFormCycle, selectPlatform, selectCustomEmoji, getFormData, validateForm,
-  setFormSaving, getFormMembers,
+  setFormSaving, getFormMembers, setOnReorder,
 } from './ui.js';
 import { MONTHS } from './constants.js';
 
@@ -16,24 +17,46 @@ import { MONTHS } from './constants.js';
 const state = {
   user:          null,
   subscriptions: [],
-  editingSubId:  null,   // null = new subscription, string = editing existing
+  editingSubId:  null,
   detailSubId:   null,
   unsubListener: null,
 };
 
+// ── Drag Reorder Callback ───────────────────────────────────────────────────
+setOnReorder(async (newIdOrder) => {
+  if (!state.user) return;
+  // Map ordered IDs -> subscription objects
+  const orderedSubs = newIdOrder
+    .map((id) => state.subscriptions.find((s) => s.id === id))
+    .filter(Boolean);
+  if (orderedSubs.length === 0) return;
+  try {
+    await reorderSubscriptions(state.user.uid, orderedSubs);
+  } catch (err) {
+    console.error('Reorder failed', err);
+    showToast('排序儲存失敗，請再試一次', 'error');
+  }
+});
+
 // ── Auth ──────────────────────────────────────────────────────────────────────
-onAuthChange((user) => {
+onAuthChange(async (user) => {
   state.user = user;
   if (user) {
     const usernameEl = document.getElementById('user-username');
     if (usernameEl) usernameEl.textContent = toUsername(user.email);
     showPage('app-page');
     startListening();
+
+    // Hit counter — CounterAPI REST, no Firebase needed
+    const count = await hitCounter();
+    const el = document.getElementById('pageview-count');
+    if (el) el.textContent = count !== null ? count.toLocaleString() : '—';
   } else {
     stopListening();
     showPage('auth-page');
   }
 });
+
 
 function startListening() {
   if (state.unsubListener) state.unsubListener();
@@ -219,6 +242,7 @@ document.getElementById('add-sub-btn')?.addEventListener('click', () => {
 
 // ── Subscription Grid (delegated) ─────────────────────────────────────────────
 document.getElementById('subscriptions-grid')?.addEventListener('click', (e) => {
+
   const card    = e.target.closest('.sub-card');
   const editBtn = e.target.closest('.edit-btn');
   if (!card) return;

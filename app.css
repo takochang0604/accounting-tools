@@ -247,6 +247,36 @@ select.form-control option { background: #1a1a35; }
 .dashboard-title { font-size: 1.2rem; font-weight: 700; }
 .dashboard-count { color: var(--text-2); font-size: .9rem; margin-top: .1rem; }
 
+/* ── Page-view Counter Badge ─────────────────────────────────────────────────── */
+.dashboard-top-right {
+  display: flex; align-items: center; gap: .85rem;
+}
+
+.pageview-badge {
+  display: inline-flex; align-items: center; gap: .3rem;
+  padding: .32rem .8rem .32rem .55rem;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  font-size: .8rem; color: var(--text-2);
+  white-space: nowrap; cursor: default;
+  transition: var(--trans);
+}
+.pageview-badge:hover {
+  border-color: rgba(255,255,255,.15);
+  background: var(--surface-hover);
+}
+.pageview-icon  { font-size: .85rem; opacity: .7; }
+.pageview-label { font-size: .75rem; color: var(--text-3); }
+.pageview-num   {
+  font-size: .9rem; font-weight: 700;
+  color: var(--text);
+  min-width: 2ch; text-align: right;
+}
+.pageview-unit  { font-size: .72rem; color: var(--text-3); }
+
+
+
 .subscriptions-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -259,11 +289,12 @@ select.form-control option { background: #1a1a35; }
   border: 1px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;
-  cursor: pointer;
+  cursor: grab;           /* whole card is draggable */
   transition: var(--trans);
   position: relative;
   animation: fadeUp .35s ease;
 }
+.sub-card:active { cursor: grabbing; }
 .sub-card:hover {
   background: var(--surface-hover);
   border-color: rgba(255,255,255,.13);
@@ -298,22 +329,36 @@ select.form-control option { background: #1a1a35; }
 .card-billing { font-size: .8rem; color: var(--text-2); margin-bottom: .9rem; }
 
 .card-footer {
-  display: flex; align-items: center; justify-content: space-between;
+  display: flex; align-items: flex-start; justify-content: space-between;
   padding-top: .75rem;
   border-top: 1px solid var(--border);
+  gap: .5rem;
 }
-.card-members { display: flex; align-items: center; gap: .4rem; flex-wrap: wrap; }
+/* Members area fills available width and wraps dots freely */
+.card-members {
+  display: flex; align-items: center;
+  gap: .28rem;          /* tight gap so more dots fit per row */
+  flex-wrap: wrap;
+  flex: 1;              /* take all remaining space */
+  min-width: 0;
+}
+/* Edit button stays right-aligned, never shrinks */
+.card-actions { flex-shrink: 0; display: flex; align-items: center; gap: .2rem; }
 
 .member-dot {
-  width: 9px; height: 9px; border-radius: 50%;
-  display: inline-block;
+  width: 8px; height: 8px; border-radius: 50%;
+  display: inline-block; flex-shrink: 0;
 }
 .member-dot.paid   { background: var(--success); }
 .member-dot.unpaid { background: var(--text-3); }
 .member-more { font-size: .72rem; color: var(--text-3); }
-.member-status { font-size: .78rem; color: var(--text-2); }
+.member-status {
+  font-size: .75rem; color: var(--text-2);
+  white-space: nowrap; margin-left: .1rem;
+}
 .member-status.all-paid { color: var(--success); font-weight: 600; }
 .member-status.no-members { color: var(--text-3); }
+
 
 /* ── Empty State ────────────────────────────────────────────────────────────── */
 .empty-state {
@@ -619,3 +664,79 @@ select.form-control option { background: #1a1a35; }
   background: #fff;
   padding: 2px;
 }
+
+/* ── Drag Handle & Drag State ────────────────────────────────────────────────── */
+.drag-handle {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px;
+  font-size: 1rem; color: var(--text-3);
+  cursor: grab; border-radius: var(--radius-xs);
+  transition: color .15s, background .15s;
+  user-select: none;
+}
+.drag-handle:hover {
+  color: var(--text-2);
+  background: var(--surface-hover);
+}
+.drag-handle:active { cursor: grabbing; }
+
+/* Card chosen by SortableJS (being lifted): slight shrink */
+.sub-card.sortable-chosen {
+  cursor: grabbing;
+  box-shadow: 0 16px 48px rgba(0,0,0,.6);
+  z-index: 20;
+}
+/* Ghost: in swap mode, ghost stays in the original position */
+.sub-card.sortable-ghost {
+  opacity: .35;
+  box-shadow: none !important;
+}
+
+/* Swap target highlight: the card you're hovering over that will swap */
+.sub-card.sortable-swap-highlight {
+  border-color: var(--primary) !important;
+  background: rgba(99,102,241,.1) !important;
+  box-shadow: 0 0 0 2px rgba(99,102,241,.4) !important;
+}
+
+/* ── Due-date Warning Badges ─────────────────────────────────────────────────── */
+.badge-due-warn {
+  background: rgba(245,158,11,.18); color: #fcd34d;
+  border: 1px solid rgba(245,158,11,.3);
+}
+.badge-due-urgent {
+  background: rgba(239,68,68,.18); color: #fca5a5;
+  border: 1px solid rgba(239,68,68,.35);
+}
+
+/* ── Due-date Warning Card Glow ──────────────────────────────────────────────── */
+.sub-card.card-due-warn {
+  border-color: rgba(245,158,11,.35);
+}
+.sub-card.card-due-warn .card-accent {
+  background: linear-gradient(90deg, var(--platform-color, var(--primary)) 50%, #f59e0b 100%);
+}
+.sub-card.card-due-warn:hover {
+  border-color: rgba(245,158,11,.55);
+  box-shadow: 0 8px 28px rgba(245,158,11,.15);
+}
+
+.sub-card.card-due-urgent {
+  border-color: rgba(239,68,68,.4);
+}
+.sub-card.card-due-urgent .card-accent {
+  background: linear-gradient(90deg, var(--platform-color, var(--primary)) 40%, #ef4444 100%);
+}
+.sub-card.card-due-urgent:hover {
+  border-color: rgba(239,68,68,.6);
+  box-shadow: 0 8px 28px rgba(239,68,68,.2);
+}
+/* Subtle pulsing animation for urgent cards */
+@keyframes urgentPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239,68,68,.25); }
+  50%       { box-shadow: 0 0 0 5px rgba(239,68,68,.0); }
+}
+.sub-card.card-due-urgent {
+  animation: fadeUp .35s ease, urgentPulse 2.2s ease-in-out infinite;
+}
+

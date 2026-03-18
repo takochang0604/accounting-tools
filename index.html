@@ -91,9 +91,17 @@
                     <div class="dashboard-title">我的訂閱</div>
                     <div id="dashboard-count" class="dashboard-count"></div>
                 </div>
-                <button id="add-sub-btn" class="btn btn-primary">
-                    ＋ 新增訂閱
-                </button>
+                <div class="dashboard-top-right">
+                    <div class="pageview-badge" title="累計訪問次數（同帳號可重複計算）">
+                        <span class="pageview-icon">👁</span>
+                        <span class="pageview-label">累計訪問</span>
+                        <span id="pageview-count" class="pageview-num">—</span>
+                        <span class="pageview-unit">次</span>
+                    </div>
+                    <button id="add-sub-btn" class="btn btn-primary">
+                        ＋ 新增訂閱
+                    </button>
+                </div>
             </div>
 
             <div id="subscriptions-grid" class="subscriptions-grid"></div>
@@ -248,6 +256,7 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
     <script type="module" src="main.js"></script>
 </body>
 

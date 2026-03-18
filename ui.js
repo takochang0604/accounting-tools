@@ -15,6 +15,36 @@ export const h = (s) =>
 export const genId = () =>
   Date.now().toString(36) + Math.random().toString(36).slice(2);
 
+/**
+ * Calculate days until next billing date.
+ * Returns a negative number if already past (overdue today).
+ * @param {object} sub - subscription object
+ * @returns {number} days until next billing (0 = today, negative = past)
+ */
+export function getDueDays(sub) {
+  const today = new Date();
+  const y = today.getFullYear();
+  const m = today.getMonth(); // 0-indexed
+  const d = today.getDate();
+
+  if (sub.billingCycle === 'yearly') {
+    // billingMonth is 1-indexed
+    const bm = (sub.billingMonth || 1) - 1;
+    const bd = sub.billingDay || 1;
+    let next = new Date(y, bm, bd);
+    if (next < new Date(y, m, d)) next = new Date(y + 1, bm, bd);
+    const diff = Math.round((next - new Date(y, m, d)) / 86400000);
+    return diff;
+  } else {
+    // monthly
+    const bd = sub.billingDay || 1;
+    let next = new Date(y, m, bd);
+    if (next < new Date(y, m, d)) next = new Date(y, m + 1, bd);
+    const diff = Math.round((next - new Date(y, m, d)) / 86400000);
+    return diff;
+  }
+}
+
 export function fmtAmount(amount, currency) {
   const sym = CURRENCY_SYMBOLS[currency] || currency;
   const num = Number(amount);
@@ -79,6 +109,9 @@ export function renderGrid(subs) {
   empty?.classList.add('hidden');
 
   grid.innerHTML = subs.map((sub) => cardHTML(sub)).join('');
+
+  // Re-attach drag-and-drop after re-render
+  initDragSort(grid);
 }
 
 function cardHTML(sub) {
@@ -91,18 +124,35 @@ function cardHTML(sub) {
   const allPaid   = totalCount > 0 && paidCount === totalCount;
   const cycleBadge = sub.billingCycle === 'monthly' ? '月費' : '年費';
 
-  const memberPreview = members.slice(0, 3).map((m) =>
+  // Show ALL member dots — flex-wrap handles overflow, no artificial limit
+  const memberPreview = members.map((m) =>
     `<span class="member-dot ${m.paid ? 'paid' : 'unpaid'}" title="${h(m.name)}"></span>`
-  ).join('') + (members.length > 3 ? `<span class="member-more">+${members.length - 3}</span>` : '');
+  ).join('');
+
+  // Due-date warning logic
+  const dueDays = getDueDays(sub);
+  let dueBadge = '';
+  let cardExtraClass = '';
+  if (dueDays === 0) {
+    dueBadge = `<span class="badge badge-due-urgent">🔴 今日扣款</span>`;
+    cardExtraClass = ' card-due-urgent';
+  } else if (dueDays <= 3) {
+    dueBadge = `<span class="badge badge-due-urgent">⚠️ ${dueDays} 天後扣款</span>`;
+    cardExtraClass = ' card-due-urgent';
+  } else if (dueDays <= 7) {
+    dueBadge = `<span class="badge badge-due-warn">⏰ ${dueDays} 天後扣款</span>`;
+    cardExtraClass = ' card-due-warn';
+  }
 
   return `
-  <div class="sub-card" data-id="${h(sub.id)}" style="--platform-color:${color}">
+  <div class="sub-card${cardExtraClass}" data-id="${h(sub.id)}" style="--platform-color:${color}">
     <div class="card-accent"></div>
     <div class="card-body">
       <div class="card-top">
         <span class="card-emoji">${emoji}</span>
         <div class="card-badges">
           <span class="badge badge-cycle">${cycleBadge}</span>
+          ${dueBadge}
           ${allPaid && totalCount > 0 ? '<span class="badge badge-paid">全額收齊</span>' : ''}
         </div>
       </div>
@@ -116,12 +166,65 @@ function cardHTML(sub) {
           ${totalCount > 0 ? `<span class="member-status ${allPaid ? 'all-paid' : ''}">${paidCount}/${totalCount} 已付</span>` : '<span class="member-status no-members">無成員</span>'}
         </div>
         <div class="card-actions">
+          <span class="drag-handle" title="拖曳排序">⠿</span>
           <button class="icon-btn edit-btn" data-id="${h(sub.id)}" title="編輯">✏️</button>
         </div>
       </div>
     </div>
   </div>`;
 }
+
+// ── Drag-and-Sort (SortableJS) ────────────────────────────────────────────────
+let _onReorder  = null;
+let _sortable   = null;
+
+export function setOnReorder(fn) { _onReorder = fn; }
+
+function initDragSort(grid) {
+  // Destroy any previous Sortable instance before re-initialising
+  if (_sortable) {
+    try { _sortable.destroy(); } catch { /* ignore */ }
+    _sortable = null;
+  }
+
+  if (!window.Sortable) {
+    console.warn('SortableJS not loaded — drag-sort disabled');
+    return;
+  }
+
+  // ★ Mount Swap plugin (only once; idempotent)
+  if (window.Sortable.Swap && !window._swapMounted) {
+    window.Sortable.mount(new window.Sortable.Swap());
+    window._swapMounted = true;
+  }
+
+  _sortable = window.Sortable.create(grid, {
+    // ★ No handle — press and hold anywhere on the card to drag
+    draggable:    '.sub-card',
+    delay:        150,               // 150ms hold to start drag (click still opens detail)
+    delayOnTouchOnly: false,         // apply delay on desktop too
+    animation:    200,
+    ghostClass:   'sortable-ghost',
+    chosenClass:  'sortable-chosen',
+    dragClass:    'sortable-drag',
+    filter:       '.edit-btn',       // clicks on ✏️ still open edit modal
+    preventOnFilter: false,
+
+    // ★ SWAP MODE: drag A to B → A and B swap positions.
+    swap:         true,
+    swapClass:    'sortable-swap-highlight',
+
+    onEnd() {
+      if (_onReorder) {
+        const newOrder = [...grid.querySelectorAll('.sub-card')]
+          .map((c) => c.dataset.id);
+        _onReorder(newOrder);
+      }
+    },
+  });
+}
+
+
 
 // ── Detail Modal ──────────────────────────────────────────────────────────────
 
