@@ -378,3 +378,21 @@ document.getElementById('sub-form')?.addEventListener('submit', async (e) => {
     `<option value="${i + 1}">${m}</option>`).join('');
 })();
 
+// ── Ad Sidebar Toggle ──────────────────────────────────────────────────────────
+(function initAdSidebar() {
+  const sidebar = document.getElementById('ad-sidebar');
+  const toggle  = document.getElementById('ad-toggle');
+  if (!sidebar || !toggle) return;
+
+  toggle.addEventListener('click', () => {
+    sidebar.classList.toggle('open');
+  });
+
+  // Close when clicking outside the sidebar
+  document.addEventListener('click', (e) => {
+    if (sidebar.classList.contains('open') && !sidebar.contains(e.target)) {
+      sidebar.classList.remove('open');
+    }
+  });
+})();
+
