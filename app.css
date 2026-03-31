@@ -111,49 +111,6 @@ button {
   margin-top: .2rem;
 }
 
-/* ── Auth page counter (above TWAI badge) ─────────────────────────────────── */
-.auth-counter {
-  display: inline-flex;
-  align-items: center;
-  gap: .28rem;
-  padding: .22rem .65rem .22rem .42rem;
-  background: rgba(255, 255, 255, .06);
-  border: 1px solid rgba(255, 255, 255, .1);
-  border-radius: 100px;
-  font-size: .75rem;
-  color: var(--text-2);
-  white-space: nowrap;
-}
-
-.auth-counter-bottom {
-  display: flex;
-  justify-content: center;
-  margin-bottom: .5rem;
-}
-
-.auth-counter-icon {
-  font-size: .78rem;
-  opacity: .6;
-}
-
-.auth-counter-label {
-  font-size: .7rem;
-  color: var(--text-3);
-}
-
-.auth-counter-num {
-  font-size: .82rem;
-  font-weight: 700;
-  color: var(--text);
-  min-width: 2ch;
-  text-align: right;
-}
-
-.auth-counter-unit {
-  font-size: .68rem;
-  color: var(--text-3);
-}
-
 .auth-tabs {
   display: flex;
   background: var(--surface);
@@ -479,57 +436,12 @@ select.form-control option {
   margin-top: .1rem;
 }
 
-/* ── Page-view Counter Badge ─────────────────────────────────────────────────── */
+/* ── Dashboard Top Right ─────────────────────────────────────────────────── */
 .dashboard-top-right {
   display: flex;
   align-items: center;
   gap: .85rem;
 }
-
-.pageview-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: .3rem;
-  padding: .32rem .8rem .32rem .55rem;
-  background: var(--surface-2);
-  border: 1px solid var(--border);
-  border-radius: 100px;
-  font-size: .8rem;
-  color: var(--text-2);
-  white-space: nowrap;
-  cursor: default;
-  transition: var(--trans);
-}
-
-.pageview-badge:hover {
-  border-color: rgba(255, 255, 255, .15);
-  background: var(--surface-hover);
-}
-
-.pageview-icon {
-  font-size: .85rem;
-  opacity: .7;
-}
-
-.pageview-label {
-  font-size: .75rem;
-  color: var(--text-3);
-}
-
-.pageview-num {
-  font-size: .9rem;
-  font-weight: 700;
-  color: var(--text);
-  min-width: 2ch;
-  text-align: right;
-}
-
-.pageview-unit {
-  font-size: .72rem;
-  color: var(--text-3);
-}
-
-
 
 .subscriptions-grid {
   display: grid;
@@ -1159,101 +1071,65 @@ select.form-control option {
   }
 }
 
-/* ── Brand Badge (Header & Auth) ─────────────────────────────────────────────── */
-.brand-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: .45rem;
-  text-decoration: none;
-  color: #1e293b;
-  font-size: .75rem;
-  font-weight: 600;
-  padding: .28rem .75rem .28rem .28rem;
-  border-radius: 100px;
-  border: 1px solid rgba(255, 255, 255, .25);
-  background: rgba(255, 255, 255, .88);
-  backdrop-filter: blur(8px);
-  transition: var(--trans);
-  white-space: nowrap;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, .15);
-}
-
-.brand-badge:hover {
-  background: #ffffff;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, .2);
-}
-
-.brand-badge-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #fff;
-  border-radius: 50%;
-  width: 22px;
-  height: 22px;
-  padding: 2px;
-  flex-shrink: 0;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, .06);
-}
-
-.brand-badge-icon img {
-  width: 18px;
-  height: 18px;
-  object-fit: contain;
-}
-
-/* Auth page: centered below the card */
-.auth-brand {
-  display: flex;
-  margin-top: 1.25rem;
-  justify-content: center;
-}
-
-@media (max-width: 768px) {
-  .brand-badge-text {
-    display: none;
-  }
-
-  .brand-badge {
-    padding: .28rem;
-  }
-}
-
-/* ── Brand Footer ────────────────────────────────────────────────────────────── */
+/* ── App Footer ───────────────────────────────────────────────────────────── */
 .app-footer {
-  padding: .75rem 1.75rem 1rem;
+  padding: 1rem 1.75rem 1.5rem;
   display: flex;
   justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, .05);
+  margin-top: auto;
 }
 
-.brand-link {
+/* ── Page-view Counter Badge (Glassmorphic Capsule) ───────────────────────── */
+.pageview-badge {
   display: inline-flex;
   align-items: center;
-  gap: .45rem;
-  color: var(--text-3);
-  text-decoration: none;
-  font-size: .78rem;
-  font-weight: 500;
-  padding: .35rem .75rem .35rem .35rem;
+  gap: .5rem;
+  padding: .5rem 1.1rem .5rem .7rem;
+  background: rgba(255, 255, 255, .06);
+  border: 1px solid rgba(255, 255, 255, .1);
   border-radius: 100px;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  transition: var(--trans);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  font-size: .85rem;
+  color: var(--text);
+  white-space: nowrap;
+  cursor: default;
+  transition: .2s ease;
 }
 
-.brand-link:hover {
-  color: var(--text-2);
-  border-color: rgba(255, 255, 255, .15);
-  background: var(--surface-hover);
+.pageview-badge:hover {
+  border-color: rgba(255, 255, 255, .2);
+  background: rgba(255, 255, 255, .1);
 }
 
-.brand-icon-img {
-  width: 20px;
-  height: 20px;
-  object-fit: contain;
+.pageview-eye-icon {
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
-  background: #fff;
-  padding: 2px;
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(99, 102, 241, 0.3));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #a78bfa;
+}
+
+.pageview-label {
+  font-size: .8rem;
+  color: var(--text-2);
+  font-weight: 500;
+}
+
+.pageview-num {
+  font-size: .95rem;
+  font-weight: 700;
+  color: #fff;
+  min-width: 2ch;
+  text-align: right;
+  letter-spacing: .03em;
 }
 
 /* ── Drag Handle & Drag State ────────────────────────────────────────────────── */
@@ -1358,185 +1234,134 @@ select.form-control option {
 }
 
 
-/* ── Page-view Counter Badge ──────────────────────────────────────────────── */
-.pageview-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: .35rem;
-  padding: .38rem .9rem .38rem .65rem;
-  background: rgba(255, 255, 255, .08);
-  border: 1px solid rgba(255, 255, 255, .14);
-  border-radius: 100px;
-  font-size: .82rem;
-  color: var(--text);
-  white-space: nowrap;
-  cursor: default;
-  transition: .2s ease;
-}
-
-.pageview-badge:hover {
-  border-color: rgba(255, 255, 255, .22);
-  background: rgba(255, 255, 255, .12);
-}
-
-.pageview-icon {
-  font-size: .9rem;
-  opacity: .8;
-}
-
-.pageview-label {
-  font-size: .78rem;
-  color: var(--text-muted, #94a3b8);
-  font-weight: 500;
-}
-
-.pageview-num {
-  font-size: .95rem;
-  font-weight: 700;
-  color: #fff;
-  min-width: 2ch;
-  text-align: right;
-}
-
-.pageview-unit {
-  font-size: .76rem;
-  color: var(--text-muted, #94a3b8);
-  font-weight: 500;
-}
-
-/* ── App Footer ───────────────────────────────────────────────────────────── */
-.app-footer {
-  padding: 1rem 1.75rem 1.5rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-  border-top: 1px solid rgba(255, 255, 255, .05);
-  margin-top: auto;
-}
-
-/* ── Ad Sidebar ──────────────────────────────────────────────────────────── */
+/* ========== 廣告側邊欄 ========== */
 .ad-sidebar {
   position: fixed;
+  top: 0;
   right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 90;
+  height: 100vh;
+  z-index: 1000;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
+  pointer-events: none;
+  transition: none;
 }
 
-/* Toggle tab */
 .ad-toggle {
+  pointer-events: auto;
   position: relative;
+  width: 40px;
+  height: 52px;
+  border: none;
+  border-radius: 12px 0 0 12px;
+  background: rgba(18, 18, 40, 0.94);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-right: none;
+  color: #fff;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 52px;
-  background: rgba(99, 102, 241, .18);
-  border: 1px solid rgba(99, 102, 241, .35);
-  border-right: none;
-  border-radius: 12px 0 0 12px;
-  cursor: pointer;
-  color: var(--text);
-  font-size: 1.3rem;
-  backdrop-filter: blur(12px);
-  box-shadow: -2px 2px 14px rgba(0, 0, 0, .3);
-  transition: background .25s ease, width .25s ease, box-shadow .25s ease;
-  z-index: 2;
+  font-size: 1.2rem;
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.3);
+  transition: background 0.3s, transform 0.3s;
+  flex-shrink: 0;
 }
 
 .ad-toggle:hover {
-  background: rgba(99, 102, 241, .32);
-  box-shadow: -2px 2px 20px rgba(99, 102, 241, .25);
+  background: rgba(30, 30, 60, 0.96);
 }
 
-.ad-toggle-icon {
-  transition: opacity .2s ease, transform .2s ease;
+.ad-toggle .ad-toggle-icon {
+  display: block;
+  transition: opacity 0.2s, transform 0.2s;
 }
 
-.ad-toggle-close {
-  position: absolute;
-  font-size: 1.5rem;
-  color: var(--text-2);
-  opacity: 0;
-  transform: rotate(-90deg);
-  transition: opacity .2s ease, transform .2s ease;
+.ad-toggle .ad-toggle-close {
+  display: none;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.6);
 }
 
-/* When open */
-.ad-sidebar.open .ad-toggle-icon {
-  opacity: 0;
-  transform: scale(.6);
+.ad-sidebar.open .ad-toggle .ad-toggle-icon {
+  display: none;
 }
 
-.ad-sidebar.open .ad-toggle-close {
-  opacity: 1;
-  transform: rotate(0deg);
+.ad-sidebar.open .ad-toggle .ad-toggle-close {
+  display: block;
 }
 
-/* Panel */
 .ad-panel {
-  width: 300px;
-  background: rgba(18, 18, 40, .94);
-  border: 1px solid rgba(255, 255, 255, .12);
-  border-right: none;
-  border-radius: 16px 0 0 16px;
-  backdrop-filter: blur(24px);
-  box-shadow: -6px 0 32px rgba(0, 0, 0, .45);
-  transform: translateX(100%);
-  opacity: 0;
-  transition: transform .35s cubic-bezier(.4, 0, .2, 1), opacity .3s ease;
+  pointer-events: auto;
+  width: 0;
   overflow: hidden;
+  background: rgba(18, 18, 40, 0.94);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-left: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: -6px 0 32px rgba(0, 0, 0, 0.45);
+  transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
 
 .ad-sidebar.open .ad-panel {
-  transform: translateX(0);
-  opacity: 1;
+  width: 300px;
 }
 
 .ad-panel-header {
-  padding: .85rem 1.1rem .65rem;
-  border-bottom: 1px solid rgba(255, 255, 255, .08);
+  padding: 20px 20px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
 }
 
 .ad-panel-title {
-  font-size: .92rem;
+  font-size: 1rem;
   font-weight: 700;
-  color: var(--text-2);
-  letter-spacing: .03em;
+  color: rgba(255, 255, 255, 0.9);
+  white-space: nowrap;
 }
 
-/* Ad Cards */
+.ad-panel-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+  overflow-y: auto;
+}
+
 .ad-card {
   display: flex;
   align-items: center;
-  gap: .85rem;
-  padding: .9rem 1.1rem;
+  gap: 14px;
+  padding: 14px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   text-decoration: none;
-  color: var(--text);
-  transition: background .2s ease, transform .15s ease;
-  border-bottom: 1px solid rgba(255, 255, 255, .06);
-}
-
-.ad-card:last-child {
-  border-bottom: none;
+  color: inherit;
+  transition: background 0.3s, transform 0.3s, border-color 0.3s;
+  cursor: pointer;
 }
 
 .ad-card:hover {
-  background: rgba(99, 102, 241, .12);
+  background: rgba(255, 255, 255, 0.1);
   transform: translateX(-2px);
+  border-color: rgba(139, 92, 246, 0.3);
 }
 
 .ad-card-icon {
+  flex-shrink: 0;
   width: 60px;
   height: 60px;
   border-radius: 14px;
   overflow: hidden;
-  flex-shrink: 0;
-  box-shadow: 0 3px 12px rgba(0, 0, 0, .35);
-  transition: transform .2s ease;
+  background: rgba(255, 255, 255, 0.06);
+  transition: transform 0.3s;
 }
 
 .ad-card:hover .ad-card-icon {
@@ -1547,81 +1372,64 @@ select.form-control option {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 }
 
 .ad-card-info {
-  display: flex;
-  flex-direction: column;
-  gap: .2rem;
   flex: 1;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .ad-card-name {
   font-size: 1rem;
   font-weight: 700;
-  color: var(--text);
+  color: rgba(255, 255, 255, 0.9);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .ad-card-desc {
-  font-size: .8rem;
-  color: var(--text-3);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.45);
 }
 
 .ad-card-arrow {
-  font-size: 1.3rem;
-  color: var(--text-3);
   flex-shrink: 0;
-  transition: transform .2s ease, color .2s ease;
+  font-size: 1.5rem;
+  color: rgba(255, 255, 255, 0.25);
+  transition: color 0.3s, transform 0.3s;
+  line-height: 1;
 }
 
 .ad-card:hover .ad-card-arrow {
+  color: #a78bfa;
   transform: translateX(3px);
-  color: var(--primary);
 }
 
-/* AD badge */
 .ad-panel-badge {
+  padding: 12px;
   text-align: center;
-  padding: .4rem;
-  font-size: .65rem;
-  font-weight: 700;
-  color: var(--text-3);
-  letter-spacing: .12em;
-  opacity: .45;
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.25);
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-/* Gentle pulse hint for the toggle when collapsed */
-@keyframes adTabPulse {
-  0%, 100% { box-shadow: -2px 2px 14px rgba(0, 0, 0, .3); }
-  50%      { box-shadow: -2px 2px 20px rgba(99, 102, 241, .4); }
-}
-
-.ad-sidebar:not(.open) .ad-toggle {
-  animation: adTabPulse 3s ease-in-out 2s 3;
-}
-
-/* Mobile: proportionally adjusted */
+/* ========== 廣告欄響應式 ========== */
 @media (max-width: 600px) {
   .ad-toggle {
     width: 34px;
     height: 44px;
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 
-  .ad-panel {
+  .ad-sidebar.open .ad-panel {
     width: 240px;
-  }
-
-  .ad-card {
-    padding: .75rem .9rem;
-    gap: .7rem;
   }
 
   .ad-card-icon {
@@ -1630,12 +1438,16 @@ select.form-control option {
     border-radius: 12px;
   }
 
-  .ad-card-name {
-    font-size: .9rem;
+  .ad-card {
+    padding: 12px;
+    gap: 10px;
   }
 
-  .ad-card-desc {
-    font-size: .72rem;
+  .ad-card-name {
+    font-size: 0.9rem;
+  }
+
+  .ad-card-arrow {
+    font-size: 1.3rem;
   }
 }
-

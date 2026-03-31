@@ -54,14 +54,6 @@
                 </button>
             </form>
         </div>
-
-        <!-- Auth page brand badge -->
-        <a href="https://www.twainews.com.tw/" target="_blank" rel="noopener" class="brand-badge auth-brand">
-            <span class="brand-badge-icon">
-                <img src="https://firebasestorage.googleapis.com/v0/b/memorandum-3abaa.firebasestorage.app/o/gemini-generated-image-w8bmabw8bmabw8bm-1-removebg-preview-2-1_orig.png?alt=media&token=2d3df30f-4cc7-4f28-b15c-0e3de6bdd9e1" alt="TWAI NEWS">
-            </span>
-            <span class="brand-badge-text">TWAI NEWS 製作提供</span>
-        </a>
     </div>
 
     <!-- ── App Page ───────────────────────────────────────────────── -->
@@ -74,12 +66,6 @@
             </div>
             <div class="header-right">
                 <span id="user-username" class="header-email"></span>
-                <a href="https://www.twainews.com.tw/" target="_blank" rel="noopener" class="brand-badge">
-                    <span class="brand-badge-icon">
-                        <img src="https://firebasestorage.googleapis.com/v0/b/memorandum-3abaa.firebasestorage.app/o/gemini-generated-image-w8bmabw8bmabw8bm-1-removebg-preview-2-1_orig.png?alt=media&token=2d3df30f-4cc7-4f28-b15c-0e3de6bdd9e1" alt="TWAI NEWS">
-                    </span>
-                    <span class="brand-badge-text">TWAI NEWS 製作提供</span>
-                </a>
                 <button id="change-pw-btn" class="btn btn-ghost btn-sm" title="更改密碼">🔐 更改密碼</button>
                 <button id="logout-btn" class="btn btn-ghost btn-sm">登出</button>
             </div>
@@ -110,11 +96,15 @@
 
         <!-- Page Footer: counter -->
         <footer class="app-footer">
-            <div class="pageview-badge" title="累計訪問次數（同帳號可重複計算）">
-                <span class="pageview-icon">👁</span>
-                <span class="pageview-label">工具造訪人數</span>
+            <div class="pageview-badge" id="app-pageview-badge" title="累計訪問次數（同帳號可重複計算）">
+                <div class="pageview-eye-icon">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                    </svg>
+                </div>
+                <span class="pageview-label">瀏覽人次</span>
                 <span id="pageview-count" class="pageview-num">—</span>
-                <span class="pageview-unit">次</span>
             </div>
         </footer>
     </div>
@@ -261,41 +251,55 @@
         </div>
     </div>
 
-    <!-- ── Ad Sidebar (Global — visible on all pages) ─────────────── -->
-    <div id="ad-sidebar" class="ad-sidebar open">
-        <button id="ad-toggle" class="ad-toggle" title="遊戲推薦">
-            <span class="ad-toggle-icon">🎮</span>
-            <span class="ad-toggle-close">&times;</span>
+    <!-- ── 推薦內容側邊欄 (Global — visible on all pages) ─────────────── -->
+    <div class="ad-sidebar open" id="ad-sidebar">
+        <button class="ad-toggle" id="ad-toggle" title="推薦內容">
+            <span class="ad-toggle-icon">⭐</span>
+            <span class="ad-toggle-close">✕</span>
         </button>
         <div class="ad-panel">
             <div class="ad-panel-header">
-                <span class="ad-panel-title">🔥 熱門遊戲推薦</span>
+                <span class="ad-panel-title">⭐ 推薦內容</span>
             </div>
             <div class="ad-panel-body">
-                <a href="https://www.gametower.com.tw/games/pg/?utm_source=twainews&utm_medium=display&utm_campaign=mega_traffic_2026&utm_content=1st_banner"
-                   target="_blank" rel="noopener" class="ad-card" id="ad-card-playstar">
+                <a class="ad-card"
+                   href="https://www.twainews.com.tw/"
+                   target="_blank" rel="noopener noreferrer">
                     <div class="ad-card-icon">
-                        <img src="圖檔/玩星派對.png" alt="玩星派對" loading="lazy">
+                        <img src="https://firebasestorage.googleapis.com/v0/b/memorandum-3abaa.firebasestorage.app/o/Gemini_Generated_Image_pnl4g6pnl4g6pnl4-removebg-preview.png?alt=media&token=bc2f8c80-d0c5-4405-90b9-19e7eb9cfdef" alt="TWAI NEWS">
+                    </div>
+                    <div class="ad-card-info">
+                        <span class="ad-card-name">TWAI NEWS</span>
+                        <span class="ad-card-desc">前往最新AI新聞</span>
+                    </div>
+                    <span class="ad-card-arrow">›</span>
+                </a>
+                <a class="ad-card"
+                   href="https://www.gametower.com.tw/games/pg/?utm_source=twainews&utm_medium=display&utm_campaign=mega_traffic_2026&utm_content=1st_banner"
+                   target="_blank" rel="noopener noreferrer">
+                    <div class="ad-card-icon">
+                        <img src="https://firebasestorage.googleapis.com/v0/b/memorandum-3abaa.firebasestorage.app/o/%E7%8E%A9%E6%98%9F%E6%B4%BE%E5%B0%8D.png?alt=media&token=a0d005bf-bd6c-44b4-9402-0290fafc3581" alt="玩星派對">
                     </div>
                     <div class="ad-card-info">
                         <span class="ad-card-name">玩星派對</span>
-                        <span class="ad-card-desc">超人氣休閒娛樂遊戲</span>
+                        <span class="ad-card-desc">立即前往遊戲</span>
                     </div>
                     <span class="ad-card-arrow">›</span>
                 </a>
-                <a href="https://cmj2.com.tw/?utm_source=twainews&utm_medium=display&utm_campaign=mega_traffic_2026&utm_content=2nd_banner"
-                   target="_blank" rel="noopener" class="ad-card" id="ad-card-mahjong">
+                <a class="ad-card"
+                   href="https://cmj2.com.tw/?utm_source=twainews&utm_medium=display&utm_campaign=mega_traffic_2026&utm_content=2nd_banner"
+                   target="_blank" rel="noopener noreferrer">
                     <div class="ad-card-icon">
-                        <img src="圖檔/競技麻將2.png" alt="競技麻將2" loading="lazy">
+                        <img src="https://firebasestorage.googleapis.com/v0/b/memorandum-3abaa.firebasestorage.app/o/%E7%AB%B6%E6%8A%80%E9%BA%BB%E5%B0%872.png?alt=media&token=4e424ebb-f006-4bab-80dd-74a152b4b833" alt="競技麻將2">
                     </div>
                     <div class="ad-card-info">
                         <span class="ad-card-name">競技麻將2</span>
-                        <span class="ad-card-desc">線上競技對戰麻將</span>
+                        <span class="ad-card-desc">立即前往遊戲</span>
                     </div>
                     <span class="ad-card-arrow">›</span>
                 </a>
             </div>
-            <div class="ad-panel-badge">AD</div>
+            <div class="ad-panel-badge">廣告</div>
         </div>
     </div>
 

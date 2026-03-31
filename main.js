@@ -384,13 +384,15 @@ document.getElementById('sub-form')?.addEventListener('submit', async (e) => {
   const toggle  = document.getElementById('ad-toggle');
   if (!sidebar || !toggle) return;
 
-  toggle.addEventListener('click', () => {
+  // 切換展開/收合
+  toggle.addEventListener('click', function(e) {
+    e.stopPropagation();
     sidebar.classList.toggle('open');
   });
 
-  // Close when clicking outside the sidebar
-  document.addEventListener('click', (e) => {
-    if (sidebar.classList.contains('open') && !sidebar.contains(e.target)) {
+  // 點擊外部自動收合
+  document.addEventListener('click', function(e) {
+    if (!sidebar.contains(e.target)) {
       sidebar.classList.remove('open');
     }
   });
